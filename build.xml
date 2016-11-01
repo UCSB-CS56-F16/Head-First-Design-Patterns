@@ -1,0 +1,62 @@
+<project>
+
+  <property name="main-class"
+	    value="edu.ucsb.cs56.pconrad.hfdp.CS56_F16_H14_Q4"  />
+
+  <path id="project.class.path"> 
+    <pathelement location="build"/>
+        <pathelement location="lib/servlet-api-2.5.jar"/>
+  </path>
+
+  <target name="compile" description="compile the code">
+    <mkdir dir="build" />
+    <javac srcdir="src"
+	   destdir="build"
+	   includeantruntime="false"
+	   debug="true" >
+      <classpath refid="project.class.path" />
+    </javac>
+  </target>
+
+  <target name="clean" description="clean up the project">
+    <delete>
+      <fileset dir="build" includes="*.class"/>
+      <fileset dir="build" includes="*.jar"/>	
+    </delete>
+  </target>
+
+  
+  <target name="run" description="run the main">
+    <java classname="${main-class}"
+	  classpath="build"/>
+  </target>
+
+  <target name="jar" depends="compile" description="create a jar file">
+    <jar destfile="build/rational.jar">
+      <fileset dir="build" includes="*.class"/>
+      <manifest>
+	<attribute name="Main-Class" value="{{main-class}}"/>
+      </manifest>
+    </jar>
+  </target>
+  
+
+  <property name="javadoc_absolute_path" location="javadoc"/>
+
+  <target name="javadoc" depends="compile" description="generate javadoc">
+    <delete>
+      <fileset dir="javadoc" />
+    </delete>
+    <javadoc destdir="javadoc">
+      <fileset dir="src" >
+	<include name="*.java"/>
+      </fileset>
+      <classpath refid="project.class.path" />
+      <link href="http://docs.oracle.com/javase/8/docs/api/" />          
+    </javadoc>
+    <echo>
+      javadoc written to file://${javadoc_absolute_path}/index.html
+    </echo> 
+  </target>
+  
+</project>
